@@ -1,0 +1,51 @@
+version: '3.7'
+
+services:
+  nginx:
+    container_name: file_storage_nginx
+    image: nginx:latest
+    restart: on-failure
+    depends_on:
+      - php
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www
+      - ./docker/config/nginx/filestorage.conf:/etc/nginx/conf.d/filestorage.conf
+      - ./docker/logs:/var/log/nginx
+    networks:
+      filestorage_net:
+        ipv4_address: 10.0.12.10
+
+  php:
+    container_name: file_storage_php
+    image: espehoola/php:8.3
+    restart: on-failure
+    depends_on:
+      - postgresql
+    volumes:
+      - .:/var/www
+      - ./docker/config/php-fpm/php.ini:/usr/local/etc/php/php.ini
+      - ./docker/config/php-fpm/xdebug.ini:/usr/local/etc/php/conf.d/50-xdebug.ini
+    networks:
+      filestorage_net:
+        ipv4_address: 10.0.12.2
+
+  postgresql:
+    container_name: file_storage_postgresql
+    image: postgres:16
+    restart: on-failure
+    env_file:
+      - ./docker/config/postgres/.env.db
+    volumes:
+      - ./docker/db:/var/lib/postgresql/data:rw
+    networks:
+      filestorage_net:
+        ipv4_address: 10.0.12.3
+
+networks:
+  filestorage_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.12.0/24

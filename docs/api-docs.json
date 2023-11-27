@@ -1,0 +1,260 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "FileStorage API",
+        "description": "Swagger OpenApi description",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost/api/v1/"
+        }
+    ],
+    "paths": {
+        "/file": {
+            "post": {
+                "summary": "Uploads file and persists file info to DB",
+                "description": "Uploads file",
+                "operationId": "createFile",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {}
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/File"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation failed",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/file/{uuid}/info": {
+            "get": {
+                "summary": "Gets file's info by Uuid",
+                "description": "Gets file's info by Uuid",
+                "operationId": "c3efb30f2f6435df957f3588ee7544e7",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "Uuid of file",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "ce1210ee-b240-47f3-a052-4aa1e75a8090"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/File"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found Error"
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/file/{uuid}": {
+            "get": {
+                "summary": "Returns file to download",
+                "description": "Returns file to download",
+                "operationId": "3c8d9e5806ada8aeacd96dcde94eeee9",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "Uuid of file",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "ce1210ee-b240-47f3-a052-4aa1e75a8090"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    },
+                    "404": {
+                        "description": "Not Found Error"
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Deletes a file by Uuid",
+                "description": "Deletes a file by Uuid",
+                "operationId": "2d34671ba5fcee358fdbcc2208b92f5d",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "Uuid of file",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "ce1210ee-b240-47f3-a052-4aa1e75a8090"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No content"
+                    },
+                    "404": {
+                        "description": "Not Found Error"
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/health-check": {
+            "get": {
+                "summary": "Checks that the service is working correctly",
+                "description": "Checks that the service is working correctly",
+                "operationId": "9020b5e4ab612dcf0809a9b71dd959a3",
+                "responses": {
+                    "200": {
+                        "description": "List of statuses of DB connection and file system",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "Fylesystem": {
+                                                "description": "Файловая система",
+                                                "type": "string",
+                                                "example": "success"
+                                            },
+                                            "Databse": {
+                                                "description": "Соединение с БД",
+                                                "type": "string",
+                                                "example": "fail"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "File": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "uuid": {
+                        "type": "string",
+                        "example": "ce1210ee-b240-47f3-a052-4aa1e75a8090"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "3c1060f05518408c8210b1b7606f424d.png"
+                    },
+                    "size": {
+                        "type": "string",
+                        "example": "999"
+                    },
+                    "mime_type": {
+                        "type": "string",
+                        "example": "image/png"
+                    },
+                    "file_hash": {
+                        "type": "string",
+                        "example": "3c1060f05518408c8210b1b7606f424d"
+                    },
+                    "owner_ip": {
+                        "type": "string",
+                        "example": "127.0.0.1"
+                    },
+                    "disk": {
+                        "type": "string",
+                        "example": "local-1"
+                    },
+                    "path": {
+                        "type": "string",
+                        "example": "AAB/AAB/3c1060f05518408c8210b1b7606f424d.png"
+                    },
+                    "url": {
+                        "type": "string",
+                        "example": "http://filestorage.local/file/ce1210ee-b240-47f3-a052-4aa1e75a8090"
+                    },
+                    "last_access": {
+                        "type": "string",
+                        "example": "2023-01-01 23:59:59"
+                    },
+                    "readings": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "example": "2023-01-01 23:59:59"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "example": "2023-01-01 23:59:59"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}

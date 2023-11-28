@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 class DirectoryService
 {
     public const FIRST_DIRECTORY = 'AAA';
-    public const FINALLY_DIRECTORY = 'AAB';
+    public const FINALLY_DIRECTORY = 'ZZZ';
 
     /**
      * Генерирует и создает, если это необходимо, путь до директории, куда будет сохраняться файл
